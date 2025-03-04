@@ -1,7 +1,7 @@
 import type { ViewConfig } from '@vaadin/hilla-file-router/types.js';
 import { TrueNasService } from 'Frontend/generated/endpoints.js';
 import { useForm } from "@vaadin/hilla-react-form";
-import { Button, FormLayout, Grid, GridColumn, Notification, NumberField } from "@vaadin/react-components";
+import { Button, Checkbox, FormLayout, Grid, GridColumn, GridSortColumn, Notification, NumberField } from "@vaadin/react-components";
 import TrueNasConfigModel from "Frontend/generated/io/binarycodes/homelab/makemynas/nas/TrueNasConfigModel";
 import TrueNas from "Frontend/generated/io/binarycodes/homelab/makemynas/nas/TrueNas";
 import { useSignal } from "@vaadin/hilla-react-signals";
@@ -9,6 +9,7 @@ import { useSignal } from "@vaadin/hilla-react-signals";
 export const config: ViewConfig = {
     title: 'TrueNas Config',
     menu: {
+        order: 0,
         title: 'TrueNas Config',
     },
 };
@@ -30,27 +31,30 @@ export default function TrueNasConfigView() {
 
     return (
         <>
-            <div className="flex flex-col gap-l">
-                <FormLayout responsiveSteps={responsiveSteps}>
-                    <NumberField label="vDev Size" {...field(model.vdevSize)} />
-                    <NumberField label="No of vDev" {...field(model.vdevCount)} />
-                </FormLayout>
-                <div className="flex flex-row gap-m">
-                    <Button onClick={clear}>Reset</Button>
-                    <Button onClick={submit} theme="primary">Save</Button>
+            <div className="flex flex-col gap-xl">
+                <div className="flex flex-col gap-l">
+                    <FormLayout responsiveSteps={responsiveSteps}>
+                        <NumberField label="Total No of Disks" {...field(model.totalDiskCount)} />
+                        <NumberField label="Parity" {...field(model.parity)} />
+                        <Checkbox label="Include all possible combinations" {...field(model.includeAllCombination)} />
+                    </FormLayout>
+                    <div className="flex flex-row gap-m">
+                        <Button onClick={clear}>Reset</Button>
+                        <Button onClick={submit} theme="primary">Save</Button>
+                    </div>
                 </div>
-            </div>
 
-            <Grid items={items.value}>
-                <GridColumn path="vdevSize" />
-                <GridColumn path="vdevCount" />
-                <GridColumn path="diskCapacity" />
-                <GridColumn path="vdevCapacity" />
-                <GridColumn path="totalCapacity" />
-                <GridColumn path="vdevPrice" />
-                <GridColumn path="totalPrice" />
-                <GridColumn path="pricePerUnitCapacity" />
-            </Grid>
+                <Grid items={items.value} allRowsVisible theme="no-border row-stripes">
+                    <GridSortColumn path="vdevSize" />
+                    <GridSortColumn path="vdevCount" />
+                    <GridSortColumn path="diskCapacity" />
+                    <GridSortColumn path="vdevCapacity" />
+                    <GridSortColumn path="totalCapacity" />
+                    <GridSortColumn path="vdevPrice" />
+                    <GridSortColumn path="totalPrice" />
+                    <GridSortColumn path="pricePerUnitCapacity" />
+                </Grid>
+            </div>
         </>
     );
 }

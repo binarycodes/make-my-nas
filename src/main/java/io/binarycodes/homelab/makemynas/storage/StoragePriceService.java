@@ -2,12 +2,9 @@ package io.binarycodes.homelab.makemynas.storage;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.BrowserCallable;
 import com.vaadin.hilla.crud.ListRepositoryService;
-import com.vaadin.pro.licensechecker.Product;
 
 @BrowserCallable
 @AnonymousAllowed
