@@ -33,7 +33,7 @@ public class StoragePrice {
     @Max(100000)
     private Double price;
 
-    public Double getPricePerTeraByte() {
+    public Double pricePerTeraByte() {
         return Math.round((price / sizeInTeraByte) * 100) / 100.0;
     }
 }

@@ -10,9 +10,9 @@ public final class TrueNas {
     private int vdevCount;
     private int diskCapacity;
     private int vdevCapacity;
-    private int totalCapacity;
+    private int poolCapacity;
     private double vdevPrice;
-    private double totalPrice;
+    private double poolPrice;
     private double pricePerUnitCapacity;
 
     private TrueNas() {
@@ -27,10 +27,11 @@ public final class TrueNas {
         item.diskCapacity = storagePrice.getSizeInTeraByte();
 
         item.vdevCapacity = item.diskCapacity * (item.vdevSize - item.parity);
-        item.totalCapacity = item.vdevCapacity * item.vdevCount;
+        item.poolCapacity = item.vdevCapacity * item.vdevCount;
         item.vdevPrice = item.vdevSize * storagePrice.getPrice();
-        item.totalPrice = item.vdevPrice * item.vdevCount;
-        item.pricePerUnitCapacity = storagePrice.getPricePerTeraByte();
+        item.poolPrice = item.vdevPrice * item.vdevCount;
+
+        item.pricePerUnitCapacity = Math.round((item.poolPrice / item.poolCapacity) * 100) / 100.0;
 
         return item;
     }

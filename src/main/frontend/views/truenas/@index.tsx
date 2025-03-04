@@ -5,6 +5,8 @@ import { Button, Checkbox, FormLayout, Grid, GridColumn, GridSortColumn, Notific
 import TrueNasConfigModel from "Frontend/generated/io/binarycodes/homelab/makemynas/nas/TrueNasConfigModel";
 import TrueNas from "Frontend/generated/io/binarycodes/homelab/makemynas/nas/TrueNas";
 import { useSignal } from "@vaadin/hilla-react-signals";
+import { useEffect } from 'react';
+import TrueNasConfig from 'Frontend/generated/io/binarycodes/homelab/makemynas/nas/TrueNasConfig';
 
 export const config: ViewConfig = {
     title: 'TrueNas Config',
@@ -22,12 +24,24 @@ const responsiveSteps = [
 export default function TrueNasConfigView() {
     const items = useSignal<TrueNas[]>([]);
 
-    const { model, field, clear, submit } = useForm(TrueNasConfigModel, {
+    const { model, field, clear, submit, addValidator } = useForm(TrueNasConfigModel, {
         onSubmit: async (trueNasConfig) => {
             items.value = await TrueNasService.createAll(trueNasConfig);
             Notification.show("Configs generated successfully.");
         }
     });
+
+    useEffect(() => {
+        addValidator({
+            message: 'Total No of Disks should be greater than Parity',
+            validate: (value: TrueNasConfig) => {
+                if (value.totalDiskCount <= value.parity) {
+                    return [{ property: model.totalDiskCount }];
+                }
+                return [];
+            }
+        });
+    }, []);
 
     return (
         <>
@@ -44,15 +58,16 @@ export default function TrueNasConfigView() {
                     </div>
                 </div>
 
-                <Grid items={items.value} allRowsVisible theme="no-border row-stripes">
+                <Grid items={items.value} allRowsVisible theme="no-border row-stripes" multiSort multiSortPriority="append">
                     <GridSortColumn path="vdevSize" />
                     <GridSortColumn path="vdevCount" />
                     <GridSortColumn path="diskCapacity" />
                     <GridSortColumn path="vdevCapacity" />
-                    <GridSortColumn path="totalCapacity" />
+                    <GridSortColumn path="poolCapacity" />
                     <GridSortColumn path="vdevPrice" />
-                    <GridSortColumn path="totalPrice" />
+                    <GridSortColumn path="poolPrice" />
                     <GridSortColumn path="pricePerUnitCapacity" />
+                    <span slot="empty-state">Submit the form above to generate NAS configuration.</span>
                 </Grid>
             </div>
         </>

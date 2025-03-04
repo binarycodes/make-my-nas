@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.hilla.BrowserCallable;
-import com.vaadin.hilla.crud.ListRepositoryService;
+import com.vaadin.hilla.crud.CrudRepositoryService;
 
 @BrowserCallable
 @AnonymousAllowed
-public class StoragePriceService extends ListRepositoryService<StoragePrice, Long, StoragePriceRepository> {
+public class StoragePriceService extends CrudRepositoryService<StoragePrice, Long, StoragePriceRepository> {
 
     private final StoragePriceRepository storagePriceRepository;
 
