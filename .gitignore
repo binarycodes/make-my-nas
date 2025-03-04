@@ -12,3 +12,6 @@ vite.generated.ts
 
 # ignore db data file
 *.db
+
+# do not commit application-dev.yml, dev environment configurations will vary for everyone
+src/main/resources/application-dev.yml

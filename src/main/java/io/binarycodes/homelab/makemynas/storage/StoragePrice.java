@@ -9,9 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Formula;
-
-import com.vaadin.hilla.Nullable;
 
 @Entity
 @Getter
@@ -36,7 +33,7 @@ public class StoragePrice {
     @Max(100000)
     private Double price;
 
-    @Nullable
-    @Formula("price/size_in_tera_byte")
-    private Float pricePerTeraByte;
+    public Double getPricePerTeraByte() {
+        return Math.round((price / sizeInTeraByte) * 100) / 100.0;
+    }
 }

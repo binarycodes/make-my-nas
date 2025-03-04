@@ -1,0 +1,9 @@
+logging:
+  level:
+    org:
+      springframework:
+        security: warn
+
+google:
+  client-id: ${PROD_GOOGLE_CLIENT_ID}
+  client-secret: ${PROD_GOOGLE_CLIENT_SECRET}
