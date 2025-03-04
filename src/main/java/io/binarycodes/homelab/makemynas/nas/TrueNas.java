@@ -14,6 +14,7 @@ public final class TrueNas {
     private double vdevPrice;
     private double poolPrice;
     private double pricePerUnitCapacity;
+    private String displayModel;
 
     private TrueNas() {
         //do not initialize
@@ -32,6 +33,7 @@ public final class TrueNas {
         item.poolPrice = item.vdevPrice * item.vdevCount;
 
         item.pricePerUnitCapacity = Math.round((item.poolPrice / item.poolCapacity) * 100) / 100.0;
+        item.displayModel = storagePrice.displayModel();
 
         return item;
     }

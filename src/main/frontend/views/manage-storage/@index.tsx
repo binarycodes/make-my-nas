@@ -11,5 +11,5 @@ export const config: ViewConfig = {
 };
 
 export default function ManagetorageView() {
-    return <AutoCrud service={StoragePriceService} model={StoragePriceModel} />
+    return <AutoCrud service={StoragePriceService} model={StoragePriceModel} className='h-full' />
 }

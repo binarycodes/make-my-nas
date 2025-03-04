@@ -27,7 +27,7 @@ export default function TrueNasConfigView() {
     const { model, field, clear, submit, addValidator } = useForm(TrueNasConfigModel, {
         onSubmit: async (trueNasConfig) => {
             items.value = await TrueNasService.createAll(trueNasConfig);
-            Notification.show("Configs generated successfully.");
+            Notification.show("Configs generated successfully.", { theme: 'success' });
         }
     });
 
@@ -59,14 +59,14 @@ export default function TrueNasConfigView() {
                 </div>
 
                 <Grid items={items.value} allRowsVisible theme="no-border row-stripes" multiSort multiSortPriority="append">
-                    <GridSortColumn path="vdevSize" />
-                    <GridSortColumn path="vdevCount" />
-                    <GridSortColumn path="diskCapacity" />
-                    <GridSortColumn path="vdevCapacity" />
-                    <GridSortColumn path="poolCapacity" />
-                    <GridSortColumn path="vdevPrice" />
-                    <GridSortColumn path="poolPrice" />
-                    <GridSortColumn path="pricePerUnitCapacity" />
+                    <GridSortColumn path="vdevSize" header="VDev Size" />
+                    <GridSortColumn path="vdevCount" header="VDev Count" />
+                    <GridSortColumn path="displayModel" header="Model" />
+                    <GridSortColumn path="vdevCapacity" header="VDev Capacity" />
+                    <GridSortColumn path="poolCapacity" header="Pool Capacity" />
+                    <GridSortColumn path="vdevPrice" header="VDev Price" />
+                    <GridSortColumn path="poolPrice" header="Pool Price" />
+                    <GridSortColumn path="pricePerUnitCapacity" header="Price per Unit Capacity" />
                     <span slot="empty-state">Submit the form above to generate NAS configuration.</span>
                 </Grid>
             </div>

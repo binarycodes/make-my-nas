@@ -36,4 +36,8 @@ public class StoragePrice {
     public Double pricePerTeraByte() {
         return Math.round((price / sizeInTeraByte) * 100) / 100.0;
     }
+
+    public String displayModel() {
+        return "%s %s %dTB".formatted(make, model, sizeInTeraByte);
+    }
 }
