@@ -1,0 +1,14 @@
+target/
+**/*.jar
+
+# ignore editor files
+.idea
+.vscode
+
+# The following files are generated/updated by Hilla
+node_modules/
+src/main/frontend/generated/
+vite.generated.ts
+
+# ignore db data file
+*.db

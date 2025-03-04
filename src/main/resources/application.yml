@@ -1,0 +1,24 @@
+server:
+  port: ${PORT:8080}
+
+logging:
+  level:
+    org:
+      atmosphere: warn
+
+spring:
+  mustache:
+    check-template-location: false
+  datasource:
+    url: jdbc:h2:file:./datafile.h2;MODE=PostgreSQL;
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+
+vaadin:
+  launch-browser: false
+  allowed-packages: io.binarycodes.homelab, com.vaadin
