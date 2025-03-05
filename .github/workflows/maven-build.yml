@@ -17,4 +17,4 @@ jobs:
           java-version: '21'
 
       - name: build in production mode
-        run: mvn clean package -Pproduction
+        run: mvn -B package -Pproduction
