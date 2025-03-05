@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.binarycodes.homelab</groupId>
-    <artifactId>makemynas</artifactId>
-    <name>makemynas</name>
+    <artifactId>make-my-nas</artifactId>
+    <name>make-my-nas</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
