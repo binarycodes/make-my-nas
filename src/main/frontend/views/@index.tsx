@@ -11,6 +11,6 @@ export const config: ViewConfig = {
 export default function MainView() {
     const navigate = useNavigate();
     useEffect(() => {
-        navigate('/register-storage');
+        navigate('/truenas');
     }, [navigate]);
 }
