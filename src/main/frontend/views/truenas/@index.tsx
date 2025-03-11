@@ -1,7 +1,7 @@
 import type { ViewConfig } from '@vaadin/hilla-file-router/types.js';
 import { TrueNasService } from 'Frontend/generated/endpoints.js';
 import { useForm } from "@vaadin/hilla-react-form";
-import { Button, Checkbox, FormLayout, Grid, GridColumn, GridSortColumn, Notification, NumberField } from "@vaadin/react-components";
+import { Button, Checkbox, FormLayout, Grid, GridEventContext, GridSortColumn, Notification, NumberField, Tooltip } from "@vaadin/react-components";
 import TrueNasConfigModel from "Frontend/generated/io/binarycodes/homelab/makemynas/nas/TrueNasConfigModel";
 import TrueNas from "Frontend/generated/io/binarycodes/homelab/makemynas/nas/TrueNas";
 import { useSignal } from "@vaadin/hilla-react-signals";
@@ -24,14 +24,23 @@ const responsiveSteps = [
 export default function TrueNasConfigView() {
     const items = useSignal<TrueNas[]>([]);
 
-    const { model, field, clear, submit, addValidator } = useForm(TrueNasConfigModel, {
+    const { model, field, clear, read, submit, addValidator } = useForm(TrueNasConfigModel, {
         onSubmit: async (trueNasConfig) => {
+            sessionStorage.setItem("prevConfig", JSON.stringify(trueNasConfig));
             items.value = await TrueNasService.createAll(trueNasConfig);
             Notification.show("Configs generated successfully.", { theme: 'success' });
         }
     });
 
+
     useEffect(() => {
+        const prevData = sessionStorage.getItem("prevConfig") || "";
+        if (!!prevData) {
+            const trueNasConfig: TrueNasConfig = JSON.parse(sessionStorage.getItem("prevConfig") || "");
+            read(trueNasConfig);
+            submit();
+        }
+
         addValidator({
             message: 'Total No of Disks should be greater than Parity',
             validate: (value: TrueNasConfig) => {
@@ -42,6 +51,17 @@ export default function TrueNasConfigView() {
             }
         });
     }, []);
+
+    const tooltipGenerator = (context: GridEventContext<TrueNas>): string => {
+        const { column, item } = context;
+        if (column && item && column.path) {
+            if (column.path === 'displayModel') {
+                return `${item[column.path]}`
+            }
+        }
+
+        return '';
+    };
 
     return (
         <>
@@ -67,6 +87,7 @@ export default function TrueNasConfigView() {
                     <GridSortColumn path="vdevPrice" header="VDev Price" />
                     <GridSortColumn path="poolPrice" header="Pool Price" />
                     <GridSortColumn path="pricePerUnitCapacity" header="Price per Unit Capacity" />
+                    <Tooltip slot="tooltip" generator={tooltipGenerator} />
                     <span slot="empty-state">Submit the form above to generate NAS configuration.</span>
                 </Grid>
             </div>
