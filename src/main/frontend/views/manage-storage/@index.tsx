@@ -11,5 +11,11 @@ export const config: ViewConfig = {
 };
 
 export default function ManagetorageView() {
-    return <AutoCrud service={StoragePriceService} model={StoragePriceModel} className='h-full' />
+    return <AutoCrud
+        className='h-full'
+        service={StoragePriceService}
+        model={StoragePriceModel}
+        gridProps={{ noHeaderFilters: true }}
+        formProps={{ visibleFields: ['make', 'model', 'sizeInTeraByte', 'price'] }}
+    />
 }

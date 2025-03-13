@@ -1,5 +1,6 @@
 package io.binarycodes.homelab.makemynas.nas;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,9 @@ public class TrueNasService {
                                 .stream()
                                 .map(vDevConfig -> TrueNas.from(vDevConfig, storage))
                 )
+                .filter(nas -> config.limitVDevPrice() == null || nas.getVdevPrice() <= config.limitVDevPrice())
+                .sorted(Comparator.comparingDouble(TrueNas::getPricePerUnitCapacity)
+                        .thenComparing(Comparator.comparing(TrueNas::getPoolCapacity).reversed()))
                 .toList();
     }
 
@@ -37,9 +41,11 @@ public class TrueNasService {
         var result = new HashSet<VDevConfig>();
 
         /* vdevSize must be at least parity+1 */
-        for (int vdevSize = minVDevSize; vdevSize <= config.totalDiskCount(); vdevSize++) {
+        int maxVDevSizeAllowed = Math.min(config.totalDiskCount(), config.maxVDevSize());
+        for (int vdevSize = minVDevSize; vdevSize <= maxVDevSizeAllowed; vdevSize++) {
             int vdevCount = Math.floorDiv(config.totalDiskCount(), vdevSize);
-            if (!config.includeAllCombination() && vdevCount == 1 && vdevSize != config.totalDiskCount()) {
+            int unusedDisks = config.totalDiskCount() - (vdevSize * vdevCount);
+            if (!config.includeAllCombination() && unusedDisks > 0) {
                 /* if we are creating one vdev, then might as well use all the drives */
                 continue;
             }

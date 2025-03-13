@@ -42,10 +42,20 @@ export default function TrueNasConfigView() {
         }
 
         addValidator({
-            message: 'Total No of Disks should be greater than Parity',
+            message: 'Must be greater than the parity',
             validate: (value: TrueNasConfig) => {
                 if (value.totalDiskCount <= value.parity) {
                     return [{ property: model.totalDiskCount }];
+                }
+                return [];
+            }
+        });
+
+        addValidator({
+            message: 'Must be greater than the parity',
+            validate: (value: TrueNasConfig) => {
+                if (value.maxVDevSize <= value.parity) {
+                    return [{ property: model.maxVDevSize }];
                 }
                 return [];
             }
@@ -68,13 +78,16 @@ export default function TrueNasConfigView() {
             <div className="flex flex-col gap-xl">
                 <div className="flex flex-col gap-l">
                     <FormLayout responsiveSteps={responsiveSteps}>
-                        <NumberField label="Total No of Disks" {...field(model.totalDiskCount)} />
-                        <NumberField label="Parity" {...field(model.parity)} />
+                        <NumberField label="Total No of Disks" {...field(model.totalDiskCount)} required/>
+                        <NumberField label="Parity" {...field(model.parity)} required/>
+                        <NumberField label="Max VDev Size" {...field(model.maxVDevSize)} required/>
+                        <NumberField label="Keep VDev Price under" {...field(model.limitVDevPrice)} />
+                        <br />
                         <Checkbox label="Include all possible combinations" {...field(model.includeAllCombination)} />
                     </FormLayout>
                     <div className="flex flex-row gap-m">
                         <Button onClick={clear}>Reset</Button>
-                        <Button onClick={submit} theme="primary">Save</Button>
+                        <Button onClick={submit} theme="primary">Generate</Button>
                     </div>
                 </div>
 
