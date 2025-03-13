@@ -1,5 +1,6 @@
 package io.binarycodes.homelab.makemynas.storage;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -33,6 +34,7 @@ public class StoragePrice {
     @Max(100000)
     private Double price;
 
+    @Nullable
     public Double getPricePerTeraByte() {
         return Math.round((price / sizeInTeraByte) * 100) / 100.0;
     }
